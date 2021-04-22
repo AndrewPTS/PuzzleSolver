@@ -8,10 +8,13 @@ import glob
 from shutil import copyfile
 
 def divide_puzzle(img, scale_factor):
-    cv2.imshow("preview", img)
-    cv2.waitKey()
+    #cv2.imshow("preview", img)
+    #cv2.waitKey()
     height, width, _ = img.shape
-    coord_height, coord_width = math.ceil(height/scale_factor), math.ceil(width/scale_factor)
+    aspect_ratio = height/width
+    piece_width = math.ceil(width/scale_factor)
+    piece_height = math.ceil(aspect_ratio * piece_width)
+    coord_height, coord_width = math.ceil(height/piece_height), math.ceil(width/piece_width)
     if coord_height%2 == 0:
         coord_height += 1
     if coord_width%2 == 0:
@@ -20,18 +23,18 @@ def divide_puzzle(img, scale_factor):
 
     # first set intersection points in a rectagular grid
     for i in range(0, coord_width):
-        if i * scale_factor >= width or i == coord_width-1:
+        if i * piece_width >= width or i == coord_width-1:
             intersect_coords[0][i][0] = int(width-1)
         else:
-            intersect_coords[0][i][0] = int(i * scale_factor)
+            intersect_coords[0][i][0] = int(i * piece_width)
     for i in range(1, coord_height):
         # first copy row to have same x coords
         intersect_coords[i] = intersect_coords[0]
         for j in range(0, coord_width):
-            if i * scale_factor >= height or i == coord_height-1:
+            if i * piece_height >= height or i == coord_height-1:
                 intersect_coords[i][j][1] = int(height-1)
             else:
-                intersect_coords[i][j][1] = int(i * scale_factor)
+                intersect_coords[i][j][1] = int(i * piece_height)
 
 
     straight_lines = img.copy()
@@ -43,32 +46,33 @@ def divide_puzzle(img, scale_factor):
             if j+1 < coord_width:
                 lines = cv2.line(straight_lines, tuple(intersect_coords[i][j]), tuple(intersect_coords[i][j+1]),
                                  (255, 255, 255), 2)
-    cv2.imshow("grid", lines)
-    cv2.waitKey()
+    #cv2.imshow("grid", straight_lines)
+    #cv2.waitKey()
+    #cv2.destroyAllWindows()
 
     # now randomize locations in set area
     # if either index is odd, it is meant to be a m/f point
-    random_factor = math.floor(scale_factor/2)
-    offset_min = math.ceil(random_factor/4)
+    random_factor = math.ceil(piece_height/3)
+    offset_min = math.floor(random_factor/2)
     for i in range(0, coord_height):
         for j in range(0, coord_width):
-            if not(i%2==0 and j%2==0):
+            if i%2 != j%2:
                 if 0 < i < coord_height-1:
-                    sign = random.randint(1, 2)
+                    sign = random.randint(0, 2)
+                    if sign == 0:
+                        sign = -1
+                    offset = (-1 * sign) * random.randint(offset_min, random_factor)
                     if i % 2 == 1:
-                        # offset = (-1**sign)*random.randint(0, offset_min)
-                        offset = 0
-                    else:
-                        offset = (-1**sign)*random.randint(offset_min, random_factor)
+                        offset = offset * .5
                     intersect_coords[i][j][1] = intersect_coords[i][j][1] + offset
 
                 if 0 < j < coord_width-1:
-                    sign = random.randint(1, 2)
+                    sign = random.randint(0, 2)
+                    if sign == 0:
+                        sign = -1
+                    offset = (-1*sign)*random.randint(offset_min, random_factor)
                     if j % 2 == 1:
-                        # offset = (-1**sign)*random.randint(0, offset_min)
-                        offset = 0
-                    else:
-                        offset = (-1**sign)*random.randint(offset_min, random_factor)
+                        offset = offset*.5
                     intersect_coords[i][j][0] = intersect_coords[i][j][0] + offset
 
     lines = img.copy()
@@ -80,8 +84,9 @@ def divide_puzzle(img, scale_factor):
             if j+1 < coord_width:
                 lines = cv2.line(lines, tuple(intersect_coords[i][j]), tuple(intersect_coords[i][j+1]),
                                  (255, 0, 255), 2)
-    cv2.imshow("pieces", lines)
-    cv2.waitKey()
+    #cv2.imshow("pieces", lines)
+    #cv2.waitKey()
+    #cv2.destroyAllWindows()
     return intersect_coords
 
 def cut_pieces(img, intersect_coords, title):

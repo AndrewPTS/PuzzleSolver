@@ -6,7 +6,7 @@ and use it to find the adjacent pieces. It also does not need a reference image!
 At this stage of the development, it uses simplified pieces
 that are not curved and do not have round pegs/holes.
 
-A generator for simplified jigsaw puzzles is included. To distribute
+Some sample puzzles have been included, along with a generator for simplified jigsaw puzzles is included. To distribute
 these pieces to other people, make sure to share the directory with the name of the puzzle.
 It is possible to delete the pieces folder in said directory, but the scrambled
 pieces must stay in the 'scrambled' directory.

@@ -12,12 +12,12 @@ It is possible to delete the pieces folder in said directory, but the scrambled
 pieces must stay in the 'scrambled' directory.
 
 ###Usage  
-####Required Libraries:
-NumPy
-PIL
-scikit-learn
+####Required Libraries:  
+NumPy  
+PIL  
+scikit-learn  
 
-####create_puzzle: create_puzzle.py -f <filename> -n <name> -g <grid size>
+####create_puzzle: create_puzzle.py -f <filename> -n <name> -g <grid size>  
 -f: filename of image  
 -n: name of the puzzle (does not need to match filename)  
 -g: grid size 
@@ -25,10 +25,10 @@ scikit-learn
 Typically, grid size roughly correlates to double the number of 
 pieces along the x axis. For a ~1000 pixel wide image, a value
 around 10-20 works well. Lower numbers have better results, but 
-obviously fewer pieces.
+obviously fewer pieces.  
   
-####solve_puzzle: solve_puzzle.py -n <name>
--n: name of the puzzle
+####solve_puzzle: solve_puzzle.py -n <name>  
+-n: name of the puzzle  
 
 The name should correspond to the directory containing a 'scrambled' 
 directory containing the scrambled pieces.

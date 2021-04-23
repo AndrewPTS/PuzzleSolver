@@ -16,7 +16,6 @@ def main():
         if opt in ['-n']:
             name = arg
 
-    print(name)
     solve(name)
 
 

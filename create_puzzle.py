@@ -23,7 +23,7 @@ def main():
         elif opt in ['-f']:
             filename = arg
         elif opt in ['-g']:
-            g = arg
+            g = int(arg)
 
     print(filename)
     img = cv2.imread(filename)

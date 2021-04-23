@@ -12,6 +12,11 @@ It is possible to delete the pieces folder in said directory, but the scrambled
 pieces must stay in the 'scrambled' directory.
 
 ###Usage  
+####Required Libraries:
+NumPy
+PIL
+scikit-learn
+
 ####create_puzzle: create_puzzle.py -f <filename> -n <name> -g <grid size>
 -f: filename of image  
 -n: name of the puzzle (does not need to match filename)  
